@@ -301,9 +301,9 @@ app.get("/",(req,res)=>{
 // mongoose.connect(DB,{ useUnifiedTopology: true ,  useNewUrlParser: true})
 
 
-const PORT = 5000
 
-const port = PORT ;
+
+const port = process.env.PORT || 5000 ;
 app.listen(port, () => {
   console.log(`server is running perfectly on port ${port}`)
 })
