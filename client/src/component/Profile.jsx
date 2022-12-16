@@ -36,7 +36,7 @@ const Profile = () => {
   });
  
 
-  const URL="http://localhost:5000";
+  const URL="http://localhost:5000/api";
 
 
   //func to delete file
