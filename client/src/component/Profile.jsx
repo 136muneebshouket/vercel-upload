@@ -36,7 +36,7 @@ const Profile = () => {
   });
  
 
-  const URL="http://localhost:5000/api";
+  const URL="http://localhost:5000";
 
 
   //func to delete file
@@ -61,7 +61,7 @@ const Profile = () => {
       FileDownload(res.data, "downloaded.pdf")
       setTimeout(() => {
         del();
-      }, 3000)
+      }, 5000)
     }).catch((err) => {
       console.log(err)
     })

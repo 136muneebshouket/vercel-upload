@@ -21,7 +21,9 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.use(cors())
+app.use(cors({
+  origin: '*'
+}));
 
 
 
@@ -74,7 +76,7 @@ app.post("/upload", upload.single('avatar'), async (req, res) => {
       }else{
         let theOutput = new PDFGenerator
            // pipe to a writable stream which would save the result into the same directory
-          theOutput.pipe(fs.createWriteStream(`./pdf/${req.file.filename}.pdf`))
+          theOutput.pipe(fs.createWriteStream(`./files/${req.file.filename}.pdf`))
     
           // write out file
           if(stop == false){
@@ -91,9 +93,9 @@ app.post("/upload", upload.single('avatar'), async (req, res) => {
                    pdf = req.file.filename;
                   loading = false;
                   
-                //   res.json({status:200,data:'file is ready'});
+                  res.json({status:200,data:'file is ready'});
                   console.log('file is ready');
-                  res.download(`./pdf/${pdf}.pdf`);
+                  // res.download(`./files/${pdf}.pdf`);
                   stop = false;
                 }else{
                   loading = false;
@@ -121,13 +123,13 @@ app.post("/upload", upload.single('avatar'), async (req, res) => {
     // let destination = path.join(__dirname, `./pdfs/${req.file.filename}.pdf`);
      if(stop == false){
 
-      let img_done = await imagesToPdf([`./files/${req.file.filename}`], `./pdf/${req.file.filename}.pdf`)
+      let img_done = await imagesToPdf([`./files/${req.file.filename}`], `./files/${req.file.filename}.pdf`)
       if(img_done){
         pdf = req.file.filename;
         loading = false;
         console.log('file is ready');
-        res.download(`./pdf/${pdf}.pdf`);
-        // res.json({status:200,data:'file is ready'});
+        // res.download(`./pdf/${pdf}.pdf`);
+        res.json({status:200,data:'file is ready'});
         stop = false;
       }else{
         loading = false;
@@ -146,11 +148,11 @@ app.post("/upload", upload.single('avatar'), async (req, res) => {
      
 
    }else{
-      let source = path.join(__dirname, req.file.path);
+      let source = path.join(__dirname, `/files/${req.file.filename}`);
       // console.log(req.file.filename)
     
       //  var outputpath = path.join(__dirname, `/files/${req.file.filename}${ext}`);
-      let destination = path.join(__dirname, `./pdf/${req.file.filename}.pdf`);
+      let destination = path.join(__dirname, `./files/${req.file.filename}.pdf`);
          
        if (stop == false) {
 
@@ -170,8 +172,8 @@ app.post("/upload", upload.single('avatar'), async (req, res) => {
                 pdf = req.file.filename
                 loading = false;
                 console.log('file is ready');
-                res.download(destination);
-                // res.json({status:200,data:'file is ready'});
+                // res.download(destination);
+                res.json({status:200,data:'file is ready'});
                 stop = false;
               }).catch(()=>{
                 stop = false;
@@ -209,93 +211,93 @@ app.post("/upload", upload.single('avatar'), async (req, res) => {
 // func();
 
 
-// app.get("/delFile", (req, resp) => {
+app.get("/delFile", (req, resp) => {
 
-//   try {
-//      if(loading == false){
+  try {
+     if(loading == false){
       
-//     checkFileExists(filepath)
-//     function checkFileExists(file) {
-//       return fs.access(`./files/${file}`, fs.constants.F_OK)
-//         .then(() => {
-//           // console.log('exist')
-//           fs.unlink(`./files/${file}`)
-//         })
-//         .catch(() => console.log('notexist'))
-//     }
+    checkFileExists(filepath)
+    function checkFileExists(file) {
+      return fs.access(`./files/${file}`, fs.constants.F_OK)
+        .then(() => {
+          // console.log('exist')
+          fs.unlink(`./files/${file}`)
+        })
+        .catch(() => console.log('notexist'))
+    }
 
 
-//     checkpdfExists(pdf)
-//     function checkpdfExists(file) {
-//       return fs.access(`./files/${file}.pdf`, fs.constants.F_OK)
-//         .then(() => {
-//           // console.log('exist')
-//           fs.unlink(`./files/${file}.pdf`)
-//         })
-//         .catch(() =>
-//          console.log('notexist')
-//          )
-//     }
+    checkpdfExists(pdf)
+    function checkpdfExists(file) {
+      return fs.access(`./files/${file}.pdf`, fs.constants.F_OK)
+        .then(() => {
+          // console.log('exist')
+          fs.unlink(`./files/${file}.pdf`)
+        })
+        .catch(() =>
+         console.log('notexist')
+         )
+    }
 
-//   }
+  }
 
-//     if (loading == true) {
-//       stop = true;
-//     }
+    if (loading == true) {
+      stop = true;
+    }
     
-//    resp.json('file deleted')
+   resp.json('file deleted')
 
 
    
 
-//   } catch (error) {
-//     resp.json(error)
-//   }
+  } catch (error) {
+    resp.json(error)
+  }
 
-// })
+})
 
 
-//download file
-// app.get('/getfile', async (req, res) => {
-//   try {
-//     checkpdfExists(pdf)
-//     function checkpdfExists(file) {
-//       return fs.access(`./files/${file}.pdf`, fs.constants.F_OK)
-//         .then(() => {
-//           //  console.log('exist')
-//           res.download(`./files/${file}.pdf`);
-//            //deleting files 
+// download file
+app.get('/getfile', async (req, res) => {
+  try {
+    checkpdfExists(pdf)
+    function checkpdfExists(file) {
+      return fs.access(`./files/${file}.pdf`, fs.constants.F_OK)
+        .then(() => {
+          //  console.log('exist')
+          res.download(`./files/${file}.pdf`);
+           //deleting files 
       
-//         })
-//         .catch(() => res.json('file deleted again choose file'))
-//     }
+        })
+        .catch(() => res.json('file deleted again choose file'))
+    }
    
    
-//   } catch (error) {
-//     res.json(error)
-//   }
-// })
+  } catch (error) {
+    res.json(error)
+  }
+})
 
 
-const staticpath =path.join(__dirname+'/website/converter.html')
+// const staticpath =path.join(__dirname+'/website/converter.html')
 
 
-app.get("/",(req,res)=>{
-    res.sendFile(staticpath);
-   })
+// app.get("/",(req,res)=>{
+//     res.sendFile(staticpath);
+//    })
    
-//   app.use(express.static(path.join(__dirname, "./client/build")));
+  app.use(express.static(path.join(__dirname, "./client/build")));
   
-//   app.get("*", function (_, res) {
-//     res.sendFile(
-//       path.join(__dirname, "./client/build/index.html"),
-//       function (err) {
-//         if (err) {
-//           res.status(500).send(err);
-//         }
-//       }
-//     );
-//   });
+  app.get("*", function (_, res) {
+    res.sendFile(
+      path.join(__dirname, "./client/build/index.html"),
+      function (err) {
+        if (err) {
+          res.status(500).send(err);
+        }
+      }
+    );
+  });
 
 // const DB = process.env.DATABASE;
 // mongoose.connect(DB,{ useUnifiedTopology: true ,  useNewUrlParser: true})
