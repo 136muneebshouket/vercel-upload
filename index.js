@@ -286,18 +286,24 @@ app.get('/getfile', async (req, res) => {
 //     res.sendFile(staticpath);
 //    })
    
-  app.use(express.static(path.join(__dirname, "./client/build")));
+  // app.use(express.static(path.join(__dirname, "./client/build")));
   
-  app.get("*", function (_, res) {
-    res.sendFile(
-      path.join(__dirname, "./client/build/index.html"),
-      function (err) {
-        if (err) {
-          res.status(500).send(err);
-        }
-      }
-    );
-  });
+  // app.get("*", function (_, res) {
+  //   res.sendFile(
+  //     path.join(__dirname, "./client/build/index.html"),
+  //     function (err) {
+  //       if (err) {
+  //         res.status(500).send(err);
+  //       }
+  //     }
+  //   );
+  // });
+
+  app.get('/', (req, res) => {
+
+    res.send('hello TO CONVERTER')
+  })
+  
 
 // const DB = process.env.DATABASE;
 // mongoose.connect(DB,{ useUnifiedTopology: true ,  useNewUrlParser: true})
