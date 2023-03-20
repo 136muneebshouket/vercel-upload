@@ -34,10 +34,10 @@ const Image_coverters = () => {
               <p>webp to Jpg</p>
              <Image src="/fast-forward.gif" alt="loading.." width={35} height={35} />
             </Link>
-            <Link href='/image_converter/Imagetopdf/Imagestopdf' className="innr_ctgry">
+            {/* <Link href='/image_converter/Imagetopdf/Imagestopdf' className="innr_ctgry">
               <p>Images to Pdf</p>
              <Image src="/fast-forward.gif" alt="loading.." width={35} height={35} />
-            </Link>
+            </Link> */}
             <Link href='/image_converter/Imagecompressor' className="innr_ctgry">
               <p>Image compressor</p>
              <Image src="/fast-forward.gif" alt="loading.." width={35} height={35} />
