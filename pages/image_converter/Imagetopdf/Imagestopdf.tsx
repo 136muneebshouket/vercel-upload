@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler} from "react";
 import Head from "next/head";
-
+// import {component} from "react"; 
 import jsPDF from "jspdf";
 
 
